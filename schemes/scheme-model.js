@@ -34,13 +34,13 @@ function update(post, id) {
         .update(post)
 }
 
-function remove(id) {
-    return db('schemes')
-        .where({ id })
-        .delete()
-}
-
 function findSteps(id) {
     return db('steps')
-        .where({ id })
+        .where({ scheme_id: id })
+        .orderBy('step_number')
+}
+
+async function remove(id) {
+    const scheme = await findById(id)
+    return db('schemes').where({ id }).del().then(() => scheme)
 }
